@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Revive Pragathi Lake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep:#030d1a;--navy:#071b30;--teal:#0a9396;--cyan:#00d4d8;
+  --emerald:#0fa36d;--blue:#0077ff;--light:#e0f7fa;--muted:#8ab3c8;
+  --white:#f0f9ff;--warn:#ef4444;
+  --glass:rgba(255,255,255,0.05);--glassborder:rgba(255,255,255,0.12);
+}
+html{scroll-behavior:smooth}
+body{background:var(--deep);color:var(--white);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(3,13,26,0.9);
+  backdrop-filter:blur(16px);border-bottom:1px solid var(--glassborder);
+  display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--cyan);letter-spacing:.05em}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:500;
+  letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--muted);border-radius:2px;transition:.2s}
+@media(max-width:640px){
+  .nav-links{display:none;position:absolute;top:60px;left:0;right:0;
+    background:rgba(3,13,26,.97);flex-direction:column;padding:1rem 2rem;gap:1rem;
+    border-bottom:1px solid var(--glassborder)}
+  .nav-links.open{display:flex}
+  .nav-hamburger{display:flex}
+}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:80px 2rem 4rem;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,#0a2540 0%,#030d1a 70%);
+  position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 70%,rgba(10,147,150,.15) 0%,transparent 50%),
+             radial-gradient(circle at 70% 30%,rgba(0,212,216,.1) 0%,transparent 50%)}
+.hero-inner{position:relative;z-index:1;max-width:800px;margin:0 auto}
+.hero-badge{display:inline-block;background:rgba(0,212,216,.1);border:1px solid rgba(0,212,216,.3);
+  color:var(--cyan);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:.35rem 1rem;border-radius:2rem;margin-bottom:1.5rem}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,6vw,5rem);font-weight:800;
+  line-height:1.05;margin-bottom:1rem;
+  background:linear-gradient(135deg,#fff 30%,var(--cyan) 70%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:560px;
+  margin:0 auto 2.5rem;line-height:1.7}
+.cta-btn{display:inline-block;padding:.85rem 2.2rem;
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  color:#fff;text-decoration:none;font-weight:700;font-size:.9rem;
+  border-radius:3rem;letter-spacing:.04em;transition:transform .2s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(0,212,216,.25)}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,216,.4)}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:4rem;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--cyan)}
+.hero-stat-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem}
+.hero-wave{position:absolute;bottom:0;left:0;right:0;height:80px}
+
+/* SECTIONS */
+.section{padding:6rem 2rem;max-width:1100px;margin:0 auto}
+.section-label{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:.75rem}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:800;line-height:1.15;margin-bottom:1rem}
+.section-desc{color:var(--muted);font-size:1rem;line-height:1.75;max-width:640px;margin-bottom:2.5rem}
+
+/* FADE IN */
+.fade{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.fade.visible{opacity:1;transform:translateY(0)}
+
+/* GLASS CARD */
+.glass-card{background:var(--glass);border:1px solid var(--glassborder);border-radius:1rem;
+  backdrop-filter:blur(8px);padding:1.5rem}
+
+/* ABOUT GRID */
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:1rem}
+
+/* STATUS */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem}
+.status-card{background:var(--glass);border:1px solid var(--glassborder);border-radius:.75rem;padding:1.25rem}
+.status-card-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.5rem}
+.status-card-value{font-size:1.1rem;font-weight:700;color:var(--warn)}
+.status-bar{height:6px;background:rgba(255,255,255,.08);border-radius:3px;margin-top:.75rem;overflow:hidden}
+.status-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--warn),#ff8c00);
+  width:0;transition:width 1.2s ease}
+
+/* HEALTH */
+.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.health-card{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);
+  border-radius:.75rem;padding:1.25rem}
+.health-icon{font-size:1.4rem;margin-bottom:.5rem}
+.health-name{font-weight:700;font-size:.9rem;margin-bottom:.35rem}
+.health-desc{font-size:.78rem;color:var(--muted);line-height:1.6}
+
+/* SURVEY */
+.survey-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem}
+.survey-card{background:var(--glass);border:1px solid var(--glassborder);border-radius:1rem;
+  padding:2rem;text-align:center}
+.survey-num{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:var(--cyan)}
+.survey-desc{font-size:.875rem;color:var(--muted);line-height:1.6;margin-top:.5rem}
+.quote-card{background:var(--glass);border-left:3px solid var(--teal);
+  border-radius:0 .75rem .75rem 0;padding:1.25rem 1.5rem;margin-top:1rem;
+  font-style:italic;color:var(--muted);font-size:.9rem}
+
+/* BEFORE AFTER */
+.ba-wrap{position:relative;border-radius:1rem;overflow:hidden;height:360px;
+  cursor:ew-resize;user-select:none}
+.ba-after,.ba-before-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.ba-after{background:linear-gradient(135deg,#0a2540,#0a4060,#0f6e56)}
+.ba-before-inner{background:linear-gradient(135deg,#1a3a1a,#2d4a0a,#1a2a0a)}
+.ba-clip{position:absolute;inset:0;overflow:hidden}
+.ba-divider{position:absolute;top:0;bottom:0;width:3px;background:#fff;cursor:ew-resize;z-index:5}
+.ba-handle{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;
+  border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;left:-19px;box-shadow:0 4px 12px rgba(0,0,0,.4);color:#000}
+.ba-label{position:absolute;bottom:1rem;font-size:.8rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;padding:.3rem .75rem;border-radius:2rem;background:rgba(0,0,0,.5);
+  backdrop-filter:blur(8px)}
+.ba-content{text-align:center;padding:2rem}
+.ba-content-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:1rem}
+.ba-items{list-style:none;text-align:left;font-size:.85rem;line-height:2}
+
+/* FLOW */
+.flow-steps{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.5rem;margin:2rem 0}
+.flow-step{background:var(--glass);border:1px solid var(--glassborder);border-radius:.5rem;
+  padding:.6rem 1rem;font-size:.8rem;font-weight:600;color:var(--cyan)}
+.flow-arrow{color:var(--teal);font-size:1.2rem}
+.systems-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+.system-card{border:1px solid var(--glassborder);border-radius:1rem;padding:1.75rem;
+  cursor:pointer;transition:border-color .2s,transform .2s,background .2s;background:var(--glass)}
+.system-card:hover,.system-card.active{background:rgba(255,255,255,.08);transform:translateY(-3px)}
+.system-icon{font-size:2rem;margin-bottom:1rem}
+.system-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.5rem}
+.system-desc{font-size:.85rem;color:var(--muted);line-height:1.7}
+
+/* LOOP */
+.loop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:2rem}
+.loop-card{background:var(--glass);border:1px solid var(--glassborder);border-radius:1rem;
+  padding:1.5rem;text-align:center}
+.loop-icon{font-size:2rem;margin-bottom:.75rem}
+.loop-label{font-size:.85rem;font-weight:600;color:var(--light);margin-bottom:.5rem}
+.loop-items{font-size:.78rem;color:var(--muted);line-height:1.8}
+.loop-cycle{text-align:center;margin-top:2rem;padding:1.25rem;
+  background:rgba(0,212,216,.07);border:1px solid rgba(0,212,216,.2);border-radius:.75rem;font-size:.9rem}
+
+/* DASHBOARD */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-top:1.5rem}
+.dash-card{background:rgba(0,212,216,.05);border:1px solid rgba(0,212,216,.2);
+  border-radius:.75rem;padding:1.25rem;text-align:center}
+.dash-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.5rem}
+.dash-value{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--cyan)}
+.dash-unit{font-size:.7rem;color:var(--muted)}
+.dash-indicator{display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--emerald);margin-right:.4rem;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* SDG */
+.sdg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:2rem}
+.sdg-card{border-radius:.75rem;padding:1.25rem;text-align:center;border:1px solid rgba(255,255,255,.1);
+  background:var(--glass);transition:transform .2s;cursor:default}
+.sdg-card:hover{transform:translateY(-3px)}
+.sdg-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:.35rem}
+.sdg-label{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+/* FUTURE */
+.future-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:2rem}
+.future-card{background:var(--glass);border:1px solid var(--glassborder);border-radius:.75rem;padding:1.25rem}
+.future-icon{font-size:1.3rem;margin-bottom:.5rem}
+.future-label{font-weight:600;font-size:.9rem}
+.future-desc{font-size:.8rem;color:var(--muted);margin-top:.3rem;line-height:1.6}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.5rem;margin-top:2rem}
+.team-card{background:var(--glass);border:1px solid var(--glassborder);border-radius:1rem;
+  padding:1.5rem;text-align:center;transition:transform .2s}
+.team-card:hover{transform:translateY(-4px)}
+.team-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;
+  margin:0 auto .75rem;background:linear-gradient(135deg,var(--teal),var(--cyan));color:#fff}
+.team-name{font-weight:700;font-size:.9rem}
+
+/* REPORT SECTION */
+.report-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+@media(max-width:700px){.report-layout{grid-template-columns:1fr}}
+.report-form{background:var(--glass);border:1px solid var(--glassborder);border-radius:1rem;padding:1.75rem}
+.report-feed{display:flex;flex-direction:column;gap:.85rem}
+.rf-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem}
+.rf-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--glassborder);
+  border-radius:.5rem;padding:.7rem .9rem;color:var(--white);
+  font-family:'Space Grotesk',sans-serif;font-size:.875rem;
+  outline:none;transition:border-color .2s;margin-bottom:1rem}
+.rf-input:focus{border-color:var(--cyan)}
+.rf-input option{background:#071b30;color:var(--white)}
+textarea.rf-input{resize:vertical;min-height:90px}
+.rf-submit{width:100%;padding:.85rem;border:none;border-radius:.5rem;cursor:pointer;
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  color:#fff;font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:700;
+  letter-spacing:.04em;transition:opacity .2s,transform .15s}
+.rf-submit:hover{opacity:.88;transform:translateY(-1px)}
+.rf-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.rf-submitting-txt{margin-top:.75rem;font-size:.78rem;color:var(--muted);text-align:center}
+.success-box{text-align:center;padding:2rem 1.5rem}
+.success-icon{font-size:3rem;margin-bottom:.75rem}
+.success-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--cyan);margin-bottom:.5rem}
+.success-sub{font-size:.85rem;color:var(--muted);line-height:1.6}
+.progress-track{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:.5rem;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--cyan));
+  border-radius:2px;animation:progFill 1.8s ease forwards}
+@keyframes progFill{from{width:0}to{width:73%}}
+.report-card{background:var(--glass);border:1px solid var(--glassborder);
+  border-radius:.75rem;padding:1rem 1.15rem;transition:border-color .3s}
+.report-card.new-card{border-color:var(--cyan);animation:cardIn .5s ease}
+@keyframes cardIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.rc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem;gap:.5rem}
+.rc-meta{display:flex;align-items:center;gap:.5rem}
+.rc-avatar{width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:700;color:#fff;flex-shrink:0}
+.rc-name{font-size:.82rem;font-weight:600}
+.rc-time{font-size:.72rem;color:var(--muted)}
+.rc-badge{font-size:.68rem;font-weight:600;padding:.2rem .55rem;border-radius:2rem;
+  background:rgba(0,212,216,.12);color:var(--cyan);border:1px solid rgba(0,212,216,.25);
+  white-space:nowrap;flex-shrink:0}
+.rc-area{font-size:.72rem;color:var(--muted);margin-bottom:.3rem}
+.rc-desc{font-size:.82rem;color:rgba(224,247,250,.8);line-height:1.55}
+.gov-banner{margin-top:1.5rem;padding:1.1rem 1.25rem;
+  background:rgba(15,163,109,.07);border:1px solid rgba(15,163,109,.25);border-radius:.75rem;
+  display:flex;align-items:flex-start;gap:1rem}
+.gov-icon{font-size:1.5rem;flex-shrink:0}
+.gov-text{font-size:.82rem;color:var(--muted);line-height:1.6}
+.gov-text strong{color:var(--emerald);font-weight:700}
+.count-pill{display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(0,212,216,.1);border:1px solid rgba(0,212,216,.2);
+  border-radius:2rem;padding:.3rem .9rem;font-size:.8rem;font-weight:600;color:var(--cyan);margin-bottom:1rem}
+.count-dot{width:7px;height:7px;border-radius:50%;background:var(--emerald);
+  display:inline-block;animation:pulse 1.5s infinite}
+.feed-header{font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:.85rem;
+  text-transform:uppercase;letter-spacing:.08em}
+.submit-another{margin-top:1.5rem;background:var(--glass) !important;
+  border:1px solid var(--glassborder) !important;color:var(--muted) !important}
+
+/* CTA */
+.cta-section{text-align:center;padding:8rem 2rem;
+  background:radial-gradient(ellipse at 50% 50%,rgba(10,147,150,.15) 0%,transparent 70%);
+  border-top:1px solid var(--glassborder)}
+.cta-section h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:800;margin-bottom:1.5rem;max-width:700px;margin-left:auto;
+  margin-right:auto;line-height:1.2}
+.cta-section p{color:var(--muted);font-size:1rem;max-width:520px;margin:0 auto 2.5rem;line-height:1.7}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem;border-top:1px solid var(--glassborder);
+  color:var(--muted);font-size:.78rem}
+footer p+p{margin-top:.5rem;opacity:.6}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">⬡ Revive Pragathi Lake</span>
+  <div class="nav-links" id="navLinks">
+    <a href="#about">About</a>
+    <a href="#status">Status</a>
+    <a href="#system">System</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#report">Report</a>
+    <a href="#team">Team</a>
+  </div>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Mahindra University · Design Thinking 2025</div>
+    <h1>REVIVE<br>PRAGATHI LAKE</h1>
+    <p class="hero-sub">A Self-Sustaining Ecosystem &amp; Anti-Mosquito System — combining solar power, autonomous robotics, and biological control to restore urban water.</p>
+    <a href="#about" class="cta-btn">Explore the Solution ↓</a>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="92">0</span>%</div>
+        <div class="hero-stat-label">Residents Affected by Odor</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="78">0</span>%</div>
+        <div class="hero-stat-label">Want Recreational Access</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="85">0</span>%</div>
+        <div class="hero-stat-label">Vendor Buy-in</div>
+      </div>
+    </div>
+  </div>
+  <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" fill="none">
+    <path d="M0 40C240 80 480 0 720 40C960 80 1200 0 1440 40V80H0V40Z" fill="rgba(7,27,48,0.8)"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<div style="background:linear-gradient(180deg,rgba(7,27,48,.8) 0%,transparent 100%)">
+<section class="section" id="about">
+  <div class="fade">
+    <div class="section-label">About the Lake</div>
+    <h2 class="section-title">Pragathi Lake — A Community Lifeline Under Threat</h2>
+    <p class="section-desc">Pragathi Lake has long been a critical water body in its urban ecosystem — supporting local biodiversity, groundwater recharge, and serving as a community landmark. Rapid urbanization, inadequate waste management, and sewage inflow have pushed it to a tipping point.</p>
+  </div>
+  <div class="about-grid">
+    <div class="fade glass-card"><div style="font-size:1.6rem;margin-bottom:.75rem">🏙️</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.4rem">Urban Context</div><div style="font-size:.85rem;color:var(--muted);line-height:1.7">Located in a densely populated zone, the lake is surrounded by residential areas directly impacted by its degradation.</div></div>
+    <div class="fade glass-card" style="transition-delay:.1s"><div style="font-size:1.6rem;margin-bottom:.75rem">💧</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.4rem">Ecological Role</div><div style="font-size:.85rem;color:var(--muted);line-height:1.7">Acts as a natural water reservoir, supporting groundwater levels and local fauna including birds and aquatic life.</div></div>
+    <div class="fade glass-card" style="transition-delay:.2s"><div style="font-size:1.6rem;margin-bottom:.75rem">⚠️</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.4rem">Current Threat</div><div style="font-size:.85rem;color:var(--muted);line-height:1.7">Uncontrolled sewage discharge, solid waste dumping, and encroachment have accelerated degradation over the past decade.</div></div>
+    <div class="fade glass-card" style="transition-delay:.3s"><div style="font-size:1.6rem;margin-bottom:.75rem">👥</div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.4rem">Community Bond</div><div style="font-size:.85rem;color:var(--muted);line-height:1.7">Thousands of residents live within 1km radius — their health, property values, and quality of life are directly tied to the lake's condition.</div></div>
+  </div>
+</section>
+</div>
+
+<!-- STATUS -->
+<section class="section" id="status">
+  <div class="fade">
+    <div class="section-label">Current Conditions</div>
+    <h2 class="section-title">State of Crisis</h2>
+    <p class="section-desc">Real-time environmental assessment confirms severe degradation across every measured parameter.</p>
+  </div>
+  <div class="status-grid">
+    <div class="fade status-card"><div class="status-card-label">Water Quality</div><div class="status-card-value">Poor</div><div class="status-bar"><div class="status-fill" data-pct="15"></div></div></div>
+    <div class="fade status-card" style="transition-delay:.08s"><div class="status-card-label">Mosquito Risk</div><div class="status-card-value">Severe</div><div class="status-bar"><div class="status-fill" data-pct="95"></div></div></div>
+    <div class="fade status-card" style="transition-delay:.16s"><div class="status-card-label">Waste Accumulation</div><div class="status-card-value">High</div><div class="status-bar"><div class="status-fill" data-pct="82"></div></div></div>
+    <div class="fade status-card" style="transition-delay:.24s"><div class="status-card-label">Odor Levels</div><div class="status-card-value">Unsafe</div><div class="status-bar"><div class="status-fill" data-pct="88"></div></div></div>
+    <div class="fade status-card" style="transition-delay:.32s"><div class="status-card-label">Dissolved Oxygen</div><div class="status-card-value">Critical</div><div class="status-bar"><div class="status-fill" data-pct="10"></div></div></div>
+    <div class="fade status-card" style="transition-delay:.4s"><div class="status-card-label">Recreational Use</div><div class="status-card-value">Impossible</div><div class="status-bar"><div class="status-fill" data-pct="5"></div></div></div>
+  </div>
+</section>
+
+<!-- PUBLIC HEALTH -->
+<section class="section" id="health" style="padding-top:0">
+  <div class="fade">
+    <div class="section-label">Public Health</div>
+    <h2 class="section-title">The Human Cost</h2>
+    <p class="section-desc">Water stagnation directly fuels mosquito breeding cycles, creating vectors for life-threatening diseases across the surrounding community.</p>
+  </div>
+  <div class="health-grid">
+    <div class="fade health-card"><div class="health-icon">🦟</div><div class="health-name">Dengue Fever</div><div class="health-desc">Aedes mosquitoes breeding in stagnant water transmit dengue, causing hemorrhagic fever in severe cases.</div></div>
+    <div class="fade health-card" style="transition-delay:.08s"><div class="health-icon">🩺</div><div class="health-name">Malaria</div><div class="health-desc">Anopheles mosquito larvae thrive in the polluted, oxygen-depleted water, sustaining malarial transmission chains.</div></div>
+    <div class="fade health-card" style="transition-delay:.16s"><div class="health-icon">🌡️</div><div class="health-name">Chikungunya</div><div class="health-desc">Joint-debilitating viral infection spread by the same Aedes mosquitoes breeding at the lake margin.</div></div>
+    <div class="fade health-card" style="transition-delay:.24s"><div class="health-icon">💨</div><div class="health-name">Methane Release</div><div class="health-desc">Anaerobic decomposition of organic waste produces methane and hydrogen sulfide, causing respiratory illness.</div></div>
+    <div class="fade health-card" style="transition-delay:.32s"><div class="health-icon">🌊</div><div class="health-name">Water Contamination</div><div class="health-desc">Groundwater infiltration spreads pollutants to nearby wells and supply systems used by local residents.</div></div>
+    <div class="fade health-card" style="transition-delay:.4s"><div class="health-icon">🧴</div><div class="health-name">Skin Irritation</div><div class="health-desc">Direct contact with the water causes dermatitis and fungal infections in children who access the lake area.</div></div>
+  </div>
+</section>
+
+<!-- COMMUNITY VOICE -->
+<section class="section" id="community">
+  <div class="fade">
+    <div class="section-label">Community Research</div>
+    <h2 class="section-title">Voices from the Neighborhood</h2>
+    <p class="section-desc">Our empathy research surveyed 200+ residents, vendors, and stakeholders within a 2km radius of Pragathi Lake.</p>
+  </div>
+  <div class="survey-grid">
+    <div class="fade survey-card"><div class="survey-num"><span class="counter" data-target="92">0</span>%</div><div class="survey-desc">of surveyed residents reported foul odors negatively impacting daily life and property value</div></div>
+    <div class="fade survey-card" style="transition-delay:.12s"><div class="survey-num"><span class="counter" data-target="78">0</span>%</div><div class="survey-desc">of residents would use the lake recreationally if mosquito populations were controlled</div></div>
+    <div class="fade survey-card" style="transition-delay:.24s"><div class="survey-num"><span class="counter" data-target="85">0</span>%</div><div class="survey-desc">of vendors agreed to pay a standardized maintenance fee in exchange for curated vending spaces</div></div>
+  </div>
+  <div class="fade" style="transition-delay:.2s">
+    <div class="quote-card">"We avoid opening our windows because of the smell. My children can't play outside in the evenings because of the mosquitoes." — Resident, 800m from lake</div>
+    <div class="quote-card">"If this lake was clean, it would bring life to this whole area. More people, more business, more pride." — Local vendor, 5 years near the lake</div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="section" id="transformation">
+  <div class="fade">
+    <div class="section-label">Transformation</div>
+    <h2 class="section-title">Before &amp; After</h2>
+    <p class="section-desc">Drag the slider to compare the current degraded state with the projected restored ecosystem.</p>
+  </div>
+  <div class="ba-wrap" id="baWrap">
+    <div class="ba-after">
+      <div class="ba-content" style="color:#e0f7fa">
+        <div class="ba-content-title" style="color:#00d4d8">After Restoration</div>
+        <ul class="ba-items">
+          <li>✅ Clean, oxygenated water</li>
+          <li>✅ Recreational walking paths</li>
+          <li>✅ Mosquito population reduced 80%+</li>
+          <li>✅ Biodiversity restored</li>
+          <li>✅ Vendor &amp; cultural events</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ba-clip" id="baClip" style="width:50%">
+      <div class="ba-before-inner">
+        <div class="ba-content">
+          <div class="ba-content-title" style="color:#ff7043">Before</div>
+          <ul class="ba-items">
+            <li>❌ Stagnant green water</li>
+            <li>❌ Mosquito infestation</li>
+            <li>❌ Floating waste &amp; debris</li>
+            <li>❌ Toxic odor</li>
+            <li>❌ Unsafe environment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ba-divider" id="baDivider" style="left:50%">
+      <div class="ba-handle">⇔</div>
+    </div>
+    <span class="ba-label" style="left:1rem">BEFORE</span>
+    <span class="ba-label" style="right:1rem">AFTER</span>
+  </div>
+</section>
+
+<!-- SYSTEM -->
+<section class="section" id="system">
+  <div class="fade">
+    <div class="section-label">Engineering Solution</div>
+    <h2 class="section-title">How the System Works</h2>
+    <p class="section-desc">Three integrated subsystems work in a self-reinforcing loop to restore and sustain the lake ecosystem.</p>
+  </div>
+  <div class="fade" style="transition-delay:.1s">
+    <div class="flow-steps">
+      <span class="flow-step">Sunlight</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">Solar Panels</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">Aerators</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">↑ Dissolved O₂</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">Cleaner Water</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">Mosquitofish Thrive</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">↓ Mosquito Larvae</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">Public Health Improves</span>
+    </div>
+  </div>
+  <div class="systems-grid">
+    <div class="fade system-card" data-id="solar" onclick="toggleSystem(this,'#f59e0b')">
+      <div class="system-icon">☀️</div>
+      <div class="system-title" style="color:#f59e0b">Solar Aeration</div>
+      <div class="system-desc">Photovoltaic panels power submersible aerators, increasing dissolved oxygen levels to support aerobic bacteria and reduce stagnation. Components include a floating solar array, air pumps, diffusers, and battery storage.</div>
+    </div>
+    <div class="fade system-card" data-id="robot" onclick="toggleSystem(this,'#06b6d4')" style="transition-delay:.1s">
+      <div class="system-icon">🤖</div>
+      <div class="system-title" style="color:#06b6d4">Debris Collector</div>
+      <div class="system-desc">An autonomous catamaran-style robot equipped with ultrasonic sensors and a collection basket navigates the lake surface. It removes plastics, leaves, and floating waste to prevent drainage blockage.</div>
+    </div>
+    <div class="fade system-card" data-id="bio" onclick="toggleSystem(this,'#10b981')" style="transition-delay:.2s">
+      <div class="system-icon">🐟</div>
+      <div class="system-title" style="color:#10b981">Mosquitofish</div>
+      <div class="system-desc">Gambusia Affinis (mosquitofish) are introduced as biological control agents. They consume mosquito larvae at the source, dramatically reducing breeding without chemical pesticides.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUSTAINABILITY LOOP -->
+<section class="section" id="sustainability">
+  <div class="fade">
+    <div class="section-label">Circular Economy</div>
+    <h2 class="section-title">The Sustainability Loop</h2>
+    <p class="section-desc">Revenue generated by community activity funds all operational costs — creating a self-sustaining financial and ecological cycle.</p>
+  </div>
+  <div class="loop-grid">
+    <div class="fade loop-card"><div class="loop-icon">🛒</div><div class="loop-label">Revenue Sources</div><div class="loop-items"><div>• Weekly flea markets</div><div>• Vendor permits</div><div>• Community events</div><div>• Cultural ticketed activities</div></div></div>
+    <div class="fade loop-card" style="transition-delay:.1s"><div class="loop-icon">⚙️</div><div class="loop-label">Operations Funded</div><div class="loop-items"><div>• Robot maintenance</div><div>• Battery replacement</div><div>• Aerator servicing</div><div>• Landscaping &amp; cleaning</div></div></div>
+    <div class="fade loop-card" style="transition-delay:.2s"><div class="loop-icon">🌿</div><div class="loop-label">Ecological Outcome</div><div class="loop-items"><div>• Cleaner lake water</div><div>• Reduced mosquito load</div><div>• Restored biodiversity</div><div>• Improved air quality</div></div></div>
+    <div class="fade loop-card" style="transition-delay:.3s"><div class="loop-icon">📈</div><div class="loop-label">Community Benefit</div><div class="loop-items"><div>• Higher property values</div><div>• Safe recreation space</div><div>• Local economic growth</div><div>• Public health improvement</div></div></div>
+  </div>
+  <div class="fade loop-cycle" style="transition-delay:.3s">
+    <span style="color:var(--cyan);font-weight:700">The cycle:</span>
+    <span style="color:var(--muted);font-size:.9rem"> Clean lake → More visitors → More revenue → Better maintenance → Cleaner lake</span>
+  </div>
+</section>
+
+<!-- LIVE DASHBOARD -->
+<section class="section" id="dashboard">
+  <div class="fade">
+    <div class="section-label">Live Monitoring</div>
+    <h2 class="section-title">Smart Lake Dashboard</h2>
+    <p class="section-desc"><span class="dash-indicator"></span>Real-time data from IoT sensors deployed across the lake.</p>
+  </div>
+  <div class="dash-grid">
+    <div class="fade dash-card"><div class="dash-label">Dissolved Oxygen</div><div class="dash-value" id="d-do">6.2</div><div class="dash-unit">mg/L</div></div>
+    <div class="fade dash-card" style="transition-delay:.05s"><div class="dash-label">pH Level</div><div class="dash-value" id="d-ph">7.1</div><div class="dash-unit">pH</div></div>
+    <div class="fade dash-card" style="transition-delay:.1s"><div class="dash-label">Water Temp</div><div class="dash-value" id="d-temp">28</div><div class="dash-unit">°C</div></div>
+    <div class="fade dash-card" style="transition-delay:.15s"><div class="dash-label">Waste Collected</div><div class="dash-value" id="d-waste">12</div><div class="dash-unit">kg today</div></div>
+    <div class="fade dash-card" style="transition-delay:.2s"><div class="dash-label">Aerator Status</div><div class="dash-value" style="font-size:1.2rem;color:var(--emerald)">ACTIVE</div><div class="dash-unit">All systems nominal</div></div>
+    <div class="fade dash-card" style="transition-delay:.25s"><div class="dash-label">Robot Battery</div><div class="dash-value" id="d-robot">82</div><div class="dash-unit">% charge</div></div>
+  </div>
+</section>
+
+<!-- SDG -->
+<section class="section" id="sdg">
+  <div class="fade">
+    <div class="section-label">Global Goals</div>
+    <h2 class="section-title">UN Sustainable Development Goals</h2>
+    <p class="section-desc">Revive Pragathi Lake directly contributes to five global sustainability targets aligned with the 2030 Agenda.</p>
+  </div>
+  <div class="sdg-grid">
+    <div class="fade sdg-card"><div class="sdg-num" style="color:#4caf50">SDG 3</div><div class="sdg-label">Good Health &amp; Wellbeing</div></div>
+    <div class="fade sdg-card" style="transition-delay:.1s"><div class="sdg-num" style="color:#2196f3">SDG 6</div><div class="sdg-label">Clean Water &amp; Sanitation</div></div>
+    <div class="fade sdg-card" style="transition-delay:.2s"><div class="sdg-num" style="color:#ff9800">SDG 11</div><div class="sdg-label">Sustainable Cities &amp; Communities</div></div>
+    <div class="fade sdg-card" style="transition-delay:.3s"><div class="sdg-num" style="color:#4db6ac">SDG 13</div><div class="sdg-label">Climate Action</div></div>
+    <div class="fade sdg-card" style="transition-delay:.4s"><div class="sdg-num" style="color:#1565c0">SDG 14</div><div class="sdg-label">Life Below Water</div></div>
+  </div>
+</section>
+
+<!-- FUTURE -->
+<section class="section" id="future">
+  <div class="fade">
+    <div class="section-label">Future Vision</div>
+    <h2 class="section-title">Scaling to Every Urban Lake</h2>
+    <p class="section-desc">The modular, self-funding architecture of this system makes it replicable across any urban water body — creating a template for India's 2,00,000+ lakes.</p>
+  </div>
+  <div class="future-grid">
+    <div class="fade future-card"><div class="future-icon">🧠</div><div class="future-label">AI Water Quality Prediction</div><div class="future-desc">Machine learning models to predict quality degradation 72 hours in advance and trigger preemptive maintenance.</div></div>
+    <div class="fade future-card" style="transition-delay:.08s"><div class="future-icon">📱</div><div class="future-label">Citizen Reporting App</div><div class="future-desc">Mobile platform for residents to report violations, monitor progress, and participate in governance.</div></div>
+    <div class="fade future-card" style="transition-delay:.16s"><div class="future-icon">🌐</div><div class="future-label">IoT Sensor Network</div><div class="future-desc">Comprehensive dissolved oxygen, turbidity, and temperature monitoring grid across the entire lake basin.</div></div>
+    <div class="fade future-card" style="transition-delay:.24s"><div class="future-icon">🏛️</div><div class="future-label">Government Partnership</div><div class="future-desc">Structured MOU framework for municipal corporations to adopt and fund scale-up to their water body portfolios.</div></div>
+    <div class="fade future-card" style="transition-delay:.32s"><div class="future-icon">🏙️</div><div class="future-label">Multi-Lake Expansion</div><div class="future-desc">Standardized deployment kit enabling replication to other urban lakes within a 90-day onboarding timeline.</div></div>
+    <div class="fade future-card" style="transition-delay:.4s"><div class="future-icon">📊</div><div class="future-label">Environmental Analytics</div><div class="future-desc">Automated ESG reporting dashboard for urban planners and policymakers to track restoration outcomes.</div></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section" id="team">
+  <div class="fade">
+    <div class="section-label">The Team</div>
+    <h2 class="section-title">Built by Students, for the City</h2>
+    <p class="section-desc">A multidisciplinary team from Mahindra University bringing together engineering, design, research, and sustainability expertise.</p>
+  </div>
+  <div class="team-grid">
+    <div class="fade team-card"><div class="team-avatar">SJ</div><div class="team-name">J Sai Jayanth</div></div>
+    <div class="fade team-card" style="transition-delay:.08s"><div class="team-avatar">GH</div><div class="team-name">G Hari</div></div>
+    <div class="fade team-card" style="transition-delay:.16s"><div class="team-avatar">YC</div><div class="team-name">Y Chaitran</div></div>
+    <div class="fade team-card" style="transition-delay:.24s"><div class="team-avatar">VM</div><div class="team-name">V Manusri</div></div>
+    <div class="fade team-card" style="transition-delay:.32s"><div class="team-avatar">HS</div><div class="team-name">G Hema Siri</div></div>
+    <div class="fade team-card" style="transition-delay:.4s"><div class="team-avatar">PS</div><div class="team-name">P Sritha</div></div>
+  </div>
+</section>
+
+<!-- COMMUNITY REPORT -->
+<section class="section" id="report">
+  <div class="fade">
+    <div class="section-label">Citizen Voice</div>
+    <h2 class="section-title">Report a Problem</h2>
+    <p class="section-desc">Spotted an issue at Pragathi Lake? Submit your report. We group community complaints and escalate them together to the municipal government for faster action.</p>
+  </div>
+  <div class="fade" style="transition-delay:.1s">
+    <div class="count-pill">
+      <span class="count-dot"></span>
+      <span id="reportCountLabel">47 reports collected — next government batch in 3 days</span>
+    </div>
+  </div>
+  <div class="report-layout">
+    <!-- FORM -->
+    <div class="report-form" id="reportFormWrap">
+      <div id="formFields">
+        <div class="rf-label">Your Name</div>
+        <input class="rf-input" id="rf-name" placeholder="e.g. Ravi Kumar" />
+        <div class="rf-label">Area / Location</div>
+        <select class="rf-input" id="rf-area">
+          <option value="">Select area near the lake</option>
+          <option>North Bank</option>
+          <option>South Gate</option>
+          <option>East Side</option>
+          <option>West Corner</option>
+          <option>Lake Inlet</option>
+          <option>Walking Path</option>
+          <option>Other</option>
+        </select>
+        <div class="rf-label">Problem Category</div>
+        <select class="rf-input" id="rf-category">
+          <option value="">Select a category</option>
+          <option>Waste Dumping</option>
+          <option>Mosquito Breeding</option>
+          <option>Water Quality</option>
+          <option>Odor Issue</option>
+          <option>Encroachment</option>
+          <option>Sewage Discharge</option>
+          <option>Other</option>
+        </select>
+        <div class="rf-label">Describe the Problem</div>
+        <textarea class="rf-input" id="rf-desc" placeholder="What did you observe? Where exactly? When did it happen?"></textarea>
+        <button class="rf-submit" id="submitBtn" onclick="submitReport()" disabled>Submit to Community Batch →</button>
+        <div class="rf-submitting-txt" id="submittingTxt" style="display:none">Encrypting and logging your report…</div>
+      </div>
+      <div id="successBox" style="display:none" class="success-box">
+        <div class="success-icon">✅</div>
+        <div class="success-title">Report Submitted!</div>
+        <div class="success-sub" id="successSub">Your complaint has been logged and added to the community batch. It will be forwarded to the Greater Hyderabad Municipal Corporation along with other reports.</div>
+        <div style="margin-top:1.25rem">
+          <div style="font-size:.72rem;color:var(--muted);margin-bottom:.3rem;text-align:left">Batch completion</div>
+          <div class="progress-track"><div class="progress-fill"></div></div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:.3rem;text-align:right">73% toward submission threshold</div>
+        </div>
+        <button class="rf-submit submit-another" onclick="resetForm()">Submit another report</button>
+      </div>
+      <div class="gov-banner">
+        <div class="gov-icon">🏛️</div>
+        <div class="gov-text"><strong>Forwarded to GHMC</strong> — All reports are grouped by category and area, then submitted as a consolidated petition to the Greater Hyderabad Municipal Corporation every 7 days or when 50+ reports are collected.</div>
+      </div>
+    </div>
+
+    <!-- FEED -->
+    <div>
+      <div class="feed-header">Recent Community Reports</div>
+      <div class="report-feed" id="reportFeed">
+        <div class="report-card">
+          <div class="rc-header"><div class="rc-meta"><div class="rc-avatar">RK</div><div><div class="rc-name">Ravi K.</div><div class="rc-time">2h ago</div></div></div><div class="rc-badge">🗑️ Waste Dumping</div></div>
+          <div class="rc-area">📍 North Bank</div>
+          <div class="rc-desc">Large pile of construction debris dumped near the inlet pipe.</div>
+        </div>
+        <div class="report-card">
+          <div class="rc-header"><div class="rc-meta"><div class="rc-avatar">AM</div><div><div class="rc-name">Ananya M.</div><div class="rc-time">5h ago</div></div></div><div class="rc-badge">🦟 Mosquito Breeding</div></div>
+          <div class="rc-area">📍 East Side</div>
+          <div class="rc-desc">Stagnant water pockets near the walking path — heavy mosquito swarms at dusk.</div>
+        </div>
+        <div class="report-card">
+          <div class="rc-header"><div class="rc-meta"><div class="rc-avatar">SP</div><div><div class="rc-name">Suresh P.</div><div class="rc-time">1d ago</div></div></div><div class="rc-badge">💧 Water Quality</div></div>
+          <div class="rc-area">📍 South Gate</div>
+          <div class="rc-desc">Noticed dark oily discharge flowing into the lake from the drain outlet.</div>
+        </div>
+        <div class="report-card">
+          <div class="rc-header"><div class="rc-meta"><div class="rc-avatar">LT</div><div><div class="rc-name">Lakshmi T.</div><div class="rc-time">1d ago</div></div></div><div class="rc-badge">💨 Odor Issue</div></div>
+          <div class="rc-area">📍 West Corner</div>
+          <div class="rc-desc">Unbearable smell near the west bank — worse in the mornings. Residents are suffering.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="fade">
+    <div class="section-label" style="margin-bottom:1rem">Final Vision</div>
+    <h2>Revive Pragathi Lake is not just a cleanup — it is a self-sustaining ecological and community-driven system designed for long-term urban health.</h2>
+    <p>Reimagine urban water systems. Build cleaner cities through sustainable innovation.</p>
+    <a href="#about" class="cta-btn">Explore Again ↑</a>
+  </div>
+</div>
+
+<footer>
+  <p>Revive Pragathi Lake · Mahindra University · Design Thinking Final Submission 2025</p>
+  <p>Built with solar power, autonomous robotics &amp; biological innovation ♻️</p>
+</footer>
+
+<script>
+/* ---- NAV HAMBURGER ---- */
+function toggleNav(){
+  document.getElementById('navLinks').classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.remove('open');
+}));
+
+/* ---- INTERSECTION OBSERVER for .fade ---- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // animate status bars
+      e.target.querySelectorAll('.status-fill[data-pct]').forEach(bar=>{
+        bar.style.width = bar.dataset.pct + '%';
+      });
+      // animate counters
+      e.target.querySelectorAll('.counter[data-target]').forEach(el=>{
+        if(el.dataset.counted) return;
+        el.dataset.counted = '1';
+        animateCounter(el, parseInt(el.dataset.target));
+      });
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.fade').forEach(el=>io.observe(el));
+
+/* ---- COUNTER ---- */
+function animateCounter(el, target){
+  let v=0;
+  const step = Math.ceil(target/90);
+  const t = setInterval(()=>{
+    v += step;
+    if(v>=target){v=target;clearInterval(t);}
+    el.textContent = v;
+  },16);
+}
+// also trigger counters inside already-visible hero on load
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.hero .counter').forEach(el=>{
+    animateCounter(el, parseInt(el.dataset.target));
+  });
+});
+
+/* ---- BEFORE / AFTER SLIDER ---- */
+const baWrap = document.getElementById('baWrap');
+const baClip = document.getElementById('baClip');
+const baDivider = document.getElementById('baDivider');
+function setSlider(clientX){
+  const rect = baWrap.getBoundingClientRect();
+  let pct = ((clientX - rect.left)/rect.width)*100;
+  pct = Math.min(90, Math.max(10, pct));
+  baClip.style.width = pct+'%';
+  baDivider.style.left = pct+'%';
+}
+baWrap.addEventListener('mousemove', e=>setSlider(e.clientX));
+baWrap.addEventListener('touchmove', e=>{ e.preventDefault(); setSlider(e.touches[0].clientX); },{passive:false});
+
+/* ---- SYSTEM CARDS ---- */
+function toggleSystem(el, color){
+  const wasActive = el.classList.contains('active');
+  document.querySelectorAll('.system-card').forEach(c=>{
+    c.classList.remove('active');
+    c.style.borderColor='';
+  });
+  if(!wasActive){
+    el.classList.add('active');
+    el.style.borderColor = color;
+  }
+}
+
+/* ---- LIVE DASHBOARD ---- */
+const doVals  = [6.2,6.8,7.1,7.4,7.0,7.3];
+const phVals  = [7.1,7.2,7.4,7.3,7.5,7.2];
+const tmpVals = [28,27,28,29,27,28];
+const wstVals = [12,14,11,15,13,12];
+const robVals = [82,84,86,83,85,87];
+let tick=0;
+setInterval(()=>{
+  tick=(tick+1)%6;
+  document.getElementById('d-do').textContent   = doVals[tick].toFixed(1);
+  document.getElementById('d-ph').textContent   = phVals[tick].toFixed(1);
+  document.getElementById('d-temp').textContent = tmpVals[tick];
+  document.getElementById('d-waste').textContent= wstVals[tick];
+  document.getElementById('d-robot').textContent= robVals[tick];
+},2000);
+
+/* ---- REPORT FORM ---- */
+let reportCount = 47;
+const tagMap = {
+  'Waste Dumping':'🗑️','Mosquito Breeding':'🦟','Water Quality':'💧',
+  'Odor Issue':'💨','Encroachment':'🚧','Sewage Discharge':'⚠️','Other':'📋'
+};
+
+function checkForm(){
+  const ok = document.getElementById('rf-name').value.trim() &&
+             document.getElementById('rf-area').value &&
+             document.getElementById('rf-category').value &&
+             document.getElementById('rf-desc').value.trim();
+  document.getElementById('submitBtn').disabled = !ok;
+}
+['rf-name','rf-area','rf-category','rf-desc'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', checkForm);
+  document.getElementById(id).addEventListener('change', checkForm);
+});
+
+function submitReport(){
+  const name     = document.getElementById('rf-name').value.trim();
+  const area     = document.getElementById('rf-area').value;
+  const category = document.getElementById('rf-category').value;
+  const desc     = document.getElementById('rf-desc').value.trim();
+
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').textContent = 'Submitting…';
+  document.getElementById('submittingTxt').style.display = 'block';
+
+  setTimeout(()=>{
+    reportCount++;
+    document.getElementById('reportCountLabel').textContent =
+      reportCount + ' reports collected — next government batch in 3 days';
+
+    // build initials
+    const parts = name.split(' ');
+    const initials = (parts[0][0]||'') + (parts[1] ? parts[1][0] : '');
+    const displayName = parts[0] + (parts[1] ? ' '+parts[1][0]+'.' : '');
+
+    // insert card at top of feed
+    const feed = document.getElementById('reportFeed');
+    const card = document.createElement('div');
+    card.className = 'report-card new-card';
+    card.innerHTML = `
+      <div class="rc-header">
+        <div class="rc-meta">
+          <div class="rc-avatar">${initials.toUpperCase()}</div>
+          <div><div class="rc-name">${displayName}</div><div class="rc-time">just now</div></div>
+        </div>
+        <div class="rc-badge">${tagMap[category]||'📋'} ${category}</div>
+      </div>
+      <div class="rc-area">📍 ${area}</div>
+      <div class="rc-desc">${desc}</div>
+    `;
+    feed.insertBefore(card, feed.firstChild);
+    // keep max 5
+    while(feed.children.length > 5) feed.removeChild(feed.lastChild);
+
+    // show success
+    document.getElementById('formFields').style.display = 'none';
+    document.getElementById('successSub').textContent =
+      `Your complaint has been logged and added to the community batch. It will be forwarded to the Greater Hyderabad Municipal Corporation along with ${reportCount-1} other reports.`;
+    document.getElementById('successBox').style.display = 'block';
+  }, 1600);
+}
+
+function resetForm(){
+  document.getElementById('rf-name').value = '';
+  document.getElementById('rf-area').value = '';
+  document.getElementById('rf-category').value = '';
+  document.getElementById('rf-desc').value = '';
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').textContent = 'Submit to Community Batch →';
+  document.getElementById('submittingTxt').style.display = 'none';
+  document.getElementById('successBox').style.display = 'none';
+  document.getElementById('formFields').style.display = 'block';
+}
+</script>
+</body>
+</html>
