@@ -1031,12 +1031,25 @@ const slidesContainer = document.getElementById('slidesContainer');
 const deckIframeContainer = document.getElementById('deckIframeContainer');
 const deckModeToggle = document.getElementById('deckModeToggle');
 
+function setIframeSrc() {
+  // OneDrive shared link (public view)
+  const oneDriveLink = 'https://mahindraecolecentrale-my.sharepoint.com/:p:/g/personal/se24uecm038_mahindrauniversity_edu_in/IQAdrpmQywWcTZ7P9CS_ZNMEASK-ZyqX19JOWmutpyxaJhA?e=0IOSAx';
+  const embedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(oneDriveLink)}`;
+  const slidesIframe = document.getElementById('slidesIframe');
+  if (slidesIframe) {
+    slidesIframe.src = embedUrl;
+  }
+}
+
 function toggleDeckMode() {
   isIframeMode = !isIframeMode;
   if (isIframeMode) {
     slidesContainer.style.display = 'none';
     deckIframeContainer.style.display = 'block';
     deckModeToggle.textContent = 'Use Interactive HTML Slides';
+    
+    // Set embed URL for PPT when switching to iframe mode
+    setIframeSrc();
     
     // Disable prev/next controls when in iframe mode
     prevBtn.disabled = true;
@@ -1054,6 +1067,9 @@ function toggleDeckMode() {
     progressBarFill.style.background = 'var(--cyan)';
   }
 }
+
+// Initialize embed on page load
+document.addEventListener('DOMContentLoaded', setIframeSrc);
 
 // Add event listener to prevent menu closure failures
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{
