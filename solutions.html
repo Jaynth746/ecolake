@@ -97,7 +97,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(3,13,26,0.9)
 }
 /* For actual iframe embed, we make sure it is absolute */
 .deck-iframe-container {
-  display: none;
+  display: block;
   width: 100%;
   height: 100%;
   border: none;
@@ -651,164 +651,9 @@ footer p+p{margin-top:.5rem;opacity:.6}
   <div class="deck-wrapper" id="deckWrapper">
     <!-- Viewport -->
     <div class="deck-viewport">
-      
-      <!-- Custom HTML Slideshow -->
-      <div class="slides-container" id="slidesContainer">
-        
-        <!-- Slide 1: Cover -->
-        <div class="slide active" data-index="1">
-          <div class="slide-bg-decoration"></div>
-          <div class="slide-content">
-            <div class="slide-header">
-              <span class="slide-badge">01 // Cover Pitch</span>
-            </div>
-            <div class="slide-body">
-              <div class="slide-cover">
-                <div class="logo-hex">⬡</div>
-                <h2>REVIVE PRAGATHI LAKE</h2>
-                <p>A Self-Sustaining Ecological Restoration &amp; Autonomous Vector-Control System designed for urban water bodies in India.</p>
-                <div class="team-list">
-                  <span>Mahindra University</span> • <span>Design Thinking Group 2025</span>
-                </div>
-              </div>
-            </div>
-            <div class="slide-footer-info">
-              <span>Revive Pragathi Lake Pitch Deck</span>
-              <span>1 / 5</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 2: Empathy & Identification -->
-        <div class="slide" data-index="2">
-          <div class="slide-bg-decoration"></div>
-          <div class="slide-content">
-            <div class="slide-header">
-              <span class="slide-badge">02 // Empathy &amp; Insights</span>
-              <h2 class="slide-title">Understanding The Problem</h2>
-            </div>
-            <div class="slide-body">
-              <div class="grid-2col">
-                <div class="col-card">
-                  <h3>🚨 The Stagnant Water Crisis</h3>
-                  <p>Rapid urban growth and poor drainage channels have turned Pragathi Lake into a stagnant waste collection sink. Stagnation results in anaerobic bacterial growth, causing foul odors, ecological decay, and a massive public health emergency.</p>
-                </div>
-                <div class="col-card">
-                  <h3>📊 Critical User Research Insights</h3>
-                  <ul>
-                    <li><strong>92% Odor Burden:</strong> Surrounding residents face breathing issues and lowered quality of life due to hydrogen sulfide.</li>
-                    <li><strong>95% Vector Risk:</strong> Severe mosquito nesting vectors transmit dengue and malaria near the banks.</li>
-                    <li><strong>Community Buy-In:</strong> 78% want recreational access; 85% of local vendors support structured maintenance fees.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="slide-footer-info">
-              <span>Section: Empathy &amp; Research</span>
-              <span>2 / 5</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 3: Engineering Subsystems -->
-        <div class="slide" data-index="3">
-          <div class="slide-bg-decoration"></div>
-          <div class="slide-content">
-            <div class="slide-header">
-              <span class="slide-badge">03 // The Technology</span>
-              <h2 class="slide-title">Three Integrated Subsystems</h2>
-            </div>
-            <div class="slide-body">
-              <div class="grid-3col">
-                <div class="pill-card">
-                  <div class="pill-icon">☀️</div>
-                  <div class="pill-title" style="color:#f59e0b">Solar Aeration</div>
-                  <p class="pill-desc">Floating solar arrays run air diffusers, increasing dissolved oxygen (DO) to clean organic load, aerate the basin, and eliminate anaerobic smell.</p>
-                </div>
-                <div class="pill-card">
-                  <div class="pill-icon">🤖</div>
-                  <div class="pill-title" style="color:#06b6d4">Autonomous Debris Bot</div>
-                  <p class="pill-desc">Ultrasonic-navigated solar catamaran sweeps the surface, catching plastics, leaves, and blocking solid waste from sewer openings.</p>
-                </div>
-                <div class="pill-card">
-                  <div class="pill-icon">🐟</div>
-                  <div class="pill-title" style="color:#10b981">Mosquitofish Bio-Control</div>
-                  <p class="pill-desc">Introducing Gambusia Affinis fish that eat mosquito larvae. Larvae count is reduced by up to 90% naturally without chemical pesticide sprays.</p>
-                </div>
-              </div>
-            </div>
-            <div class="slide-footer-info">
-              <span>Section: Engineering Solution</span>
-              <span>3 / 5</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 4: Circular Economy -->
-        <div class="slide" data-index="4">
-          <div class="slide-bg-decoration"></div>
-          <div class="slide-content">
-            <div class="slide-header">
-              <span class="slide-badge">04 // Sustainability</span>
-              <h2 class="slide-title">Self-Sustaining Financial Model</h2>
-            </div>
-            <div class="slide-body">
-              <div class="flow-container">
-                <div class="flow-bar">
-                  <div class="flow-num">1</div>
-                  <div class="flow-text"><strong>Revenue Ingestion:</strong> Organizing weekend flea markets, structured vendor permit zones, and cultural events on the clean lakefront.</div>
-                </div>
-                <div class="flow-bar">
-                  <div class="flow-num">2</div>
-                  <div class="flow-text"><strong>Maintenance Funding:</strong> Direct flow of revenues into replacing batteries, maintenance of aerators, and autonomous boat servicing.</div>
-                </div>
-                <div class="flow-bar">
-                  <div class="flow-num">3</div>
-                  <div class="flow-text"><strong>Ecosystem Loop:</strong> Continuous operations ensure clean water, attracting more visitors, which secures future operations.</div>
-                </div>
-              </div>
-            </div>
-            <div class="slide-footer-info">
-              <span>Section: Financial Circular Loop</span>
-              <span>4 / 5</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 5: Goals & Scaling -->
-        <div class="slide" data-index="5">
-          <div class="slide-bg-decoration"></div>
-          <div class="slide-content">
-            <div class="slide-header">
-              <span class="slide-badge">05 // Scaling &amp; Outcomes</span>
-              <h2 class="slide-title">Expected Outcome &amp; Impact</h2>
-            </div>
-            <div class="slide-body">
-              <div class="grid-2col">
-                <div class="col-card">
-                  <h3>✅ Local Key Outcomes</h3>
-                  <p>• 80%+ Reduction in breeding mosquito larvae.<br>
-                     • 100% Odor mitigation in surrounding sectors.<br>
-                     • Safe, green recreational zone restoration.<br>
-                     • Aligned to UN SDGs: SDG 3 (Health), SDG 6 (Clean Water), SDG 11 (Sustainable Cities), SDG 14 (Life below Water).</p>
-                </div>
-                <div class="col-card">
-                  <h3>🏛️ Scalability Framework</h3>
-                  <p>Modular, self-funding design is packageable as an urban toolkit. It can be easily replicated in municipalities across India, protecting citizens and cleaning waterways with minimal continuous government funding.</p>
-                </div>
-              </div>
-            </div>
-            <div class="slide-footer-info">
-              <span>Section: Scaling &amp; SDGs</span>
-              <span>5 / 5</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
 
       <!-- PPTX Embed via Microsoft Office Online Viewer -->
-      <div class="deck-iframe-container" id="deckIframeContainer" style="display:block">
+      <div class="deck-iframe-container" id="deckIframeContainer">
         <!-- The src is set dynamically in JS using window.location.origin so it works on Vercel -->
         <iframe id="slidesIframe" src="" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
       </div>
@@ -818,8 +663,6 @@ footer p+p{margin-top:.5rem;opacity:.6}
     <!-- Controls dashboard -->
     <div class="deck-controls">
       <div class="control-group">
-        <button class="deck-btn" id="prevBtn" onclick="prevSlide()" disabled style="opacity:0.3;cursor:not-allowed">← Previous</button>
-        <button class="deck-btn" id="nextBtn" onclick="nextSlide()" style="opacity:0.3;cursor:not-allowed">Next →</button>
         <span class="slide-indicator" id="slideIndicator" style="opacity:0.3">PowerPoint Deck</span>
       </div>
       <div class="control-group" style="flex-grow:1; justify-content:center;">
@@ -828,7 +671,6 @@ footer p+p{margin-top:.5rem;opacity:.6}
         </div>
       </div>
       <div class="control-group">
-        <span class="toggle-deck-mode" id="deckModeToggle" onclick="toggleDeckMode()">Switch to HTML Summary Slides</span>
         <button class="deck-btn" onclick="toggleFullscreen()" style="padding:0.4rem;">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
         </button>
@@ -941,95 +783,11 @@ function toggleNav(){
   document.getElementById('navLinks').classList.toggle('open');
 }
 
-/* ---- PRESENTATION SLIDESHOW LOGIC ---- */
-let currentSlideIndex = 1;
-const totalSlides = 5;
-const slides = document.querySelectorAll('.slide');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const slideIndicator = document.getElementById('slideIndicator');
-const progressBarFill = document.getElementById('progressBarFill');
-
-function showSlide(index) {
-  if (index < 1 || index > totalSlides) return;
-  
-  slides.forEach(slide => {
-    slide.classList.remove('active');
-  });
-  
-  const targetSlide = document.querySelector(`.slide[data-index="${index}"]`);
-  if (targetSlide) {
-    targetSlide.classList.add('active');
-  }
-  
-  currentSlideIndex = index;
-  
-  // Update Buttons
-  prevBtn.disabled = (currentSlideIndex === 1);
-  nextBtn.disabled = (currentSlideIndex === totalSlides);
-  
-  // Update Indicators
-  slideIndicator.textContent = `Slide ${currentSlideIndex} of ${totalSlides}`;
-  progressBarFill.style.width = `${(currentSlideIndex / totalSlides) * 100}%`;
-}
-
-function nextSlide() {
-  if (currentSlideIndex < totalSlides) {
-    showSlide(currentSlideIndex + 1);
-  }
-}
-
-function prevSlide() {
-  if (currentSlideIndex > 1) {
-    showSlide(currentSlideIndex - 1);
-  }
-}
-
-// Keyboard controls
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') {
-    nextSlide();
-  } else if (e.key === 'ArrowLeft') {
-    prevSlide();
-  }
-});
-
 // Fullscreen capability
 function toggleFullscreen() {
   const deckWrapper = document.getElementById('deckWrapper');
   deckWrapper.classList.toggle('fullscreen');
 }
-
-// Swipe Support on Slides Viewport for Mobile Devices
-let touchStartX = 0;
-let touchEndX = 0;
-const deckViewport = document.querySelector('.deck-viewport');
-
-deckViewport.addEventListener('touchstart', e => {
-  touchStartX = e.changedTouches[0].screenX;
-}, { passive: true });
-
-deckViewport.addEventListener('touchend', e => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-}, { passive: true });
-
-function handleSwipe() {
-  const diff = touchStartX - touchEndX;
-  if (Math.abs(diff) > 50) { // minimum threshold of 50px swipe
-    if (diff > 0) {
-      nextSlide(); // Swiped Left -> Next Slide
-    } else {
-      prevSlide(); // Swiped Right -> Prev Slide
-    }
-  }
-}
-
-/* ---- TOGGLE DECK VIEWING MODE (HTML vs Cloud iframe) ---- */
-let isIframeMode = false;
-const slidesContainer = document.getElementById('slidesContainer');
-const deckIframeContainer = document.getElementById('deckIframeContainer');
-const deckModeToggle = document.getElementById('deckModeToggle');
 
 function setIframeSrc() {
   // OneDrive direct download link (public view)
@@ -1038,33 +796,6 @@ function setIframeSrc() {
   const slidesIframe = document.getElementById('slidesIframe');
   if (slidesIframe) {
     slidesIframe.src = embedUrl;
-  }
-}
-
-function toggleDeckMode() {
-  isIframeMode = !isIframeMode;
-  if (isIframeMode) {
-    slidesContainer.style.display = 'none';
-    deckIframeContainer.style.display = 'block';
-    deckModeToggle.textContent = 'Use Interactive HTML Slides';
-    
-    // Set embed URL for PPT when switching to iframe mode
-    setIframeSrc();
-    
-    // Disable prev/next controls when in iframe mode
-    prevBtn.disabled = true;
-    nextBtn.disabled = true;
-    slideIndicator.style.opacity = '0.3';
-    progressBarFill.style.background = '#334155';
-  } else {
-    slidesContainer.style.display = 'block';
-    deckIframeContainer.style.display = 'none';
-    deckModeToggle.textContent = 'Use Cloud Deck Embed';
-    
-    // Re-enable slides controls
-    showSlide(currentSlideIndex);
-    slideIndicator.style.opacity = '1';
-    progressBarFill.style.background = 'var(--cyan)';
   }
 }
 
