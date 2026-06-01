@@ -654,8 +654,7 @@ footer p+p{margin-top:.5rem;opacity:.6}
 
       <!-- PPTX Embed via Microsoft Office Online Viewer -->
       <div class="deck-iframe-container" id="deckIframeContainer">
-        <!-- The src is set dynamically in JS using window.location.origin so it works on Vercel -->
-        <iframe id="slidesIframe" src="" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+        <iframe src="assets/RevivePragathiLake.pdf" allowfullscreen style="width:100%; height:100%; border:none;"></iframe>
       </div>
 
     </div>
@@ -663,7 +662,7 @@ footer p+p{margin-top:.5rem;opacity:.6}
     <!-- Controls dashboard -->
     <div class="deck-controls">
       <div class="control-group">
-        <span class="slide-indicator" id="slideIndicator" style="opacity:0.3">PowerPoint Deck</span>
+       <span class="slide-indicator">PDF Presentation</span>
       </div>
       <div class="control-group" style="flex-grow:1; justify-content:center;">
         <div class="progress-bar-container">
@@ -678,6 +677,10 @@ footer p+p{margin-top:.5rem;opacity:.6}
     </div>
   </div>
 </section>
+
+<div style="text-align:center; margin-top:20px;">
+    <a href="assets/RevivePragathiLake.pdf" target="_blank" class="drive-btn">Open Presentation in New Tab</a>
+</div>
 
 <!-- DOCUMENTATION HUB SECTION -->
 <section class="section doc-section" id="documentation-hub">
@@ -788,19 +791,6 @@ function toggleFullscreen() {
   const deckWrapper = document.getElementById('deckWrapper');
   deckWrapper.classList.toggle('fullscreen');
 }
-
-function setIframeSrc() {
-  // OneDrive direct download link (public view)
-  const oneDriveLink = 'https://mahindraecolecentrale-my.sharepoint.com/:p:/g/personal/se24uecm038_mahindrauniversity_edu_in/IQAdrpmQywWcTZ7P9CS_ZNMEASK-ZyqX19JOWmutpyxaJhA?download=1';
-  const embedUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(oneDriveLink)}`;
-  const slidesIframe = document.getElementById('slidesIframe');
-  if (slidesIframe) {
-    slidesIframe.src = embedUrl;
-  }
-}
-
-// Initialize embed on page load
-document.addEventListener('DOMContentLoaded', setIframeSrc);
 
 // Add event listener to prevent menu closure failures
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{
