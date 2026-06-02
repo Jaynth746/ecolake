@@ -1,0 +1,544 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap');
+:root{--lake:#0F6E56;--lake-lt:#1D9E75;--lake-pale:#E1F5EE;--lake-pale2:#9FE1CB;--warn:#BA7517;--warn-pale:#FAEEDA;--danger:#A32D2D;--danger-pale:#FCEBEB;--info:#185FA5;--info-pale:#E6F1FB;--text:var(--color-text-primary);--muted:var(--color-text-secondary);--card:var(--color-background-primary);--surface:var(--color-background-secondary);--border:var(--color-border-tertiary)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;font-weight:400;background:transparent}
+.page{padding:0 0 2rem}
+.hero{background:var(--lake);color:#fff;padding:1.5rem 1.5rem 1.25rem;border-radius:var(--border-radius-lg);margin-bottom:1.25rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;right:-40px;top:-60px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.04)}
+.hero::after{content:'';position:absolute;right:40px;bottom:-80px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.03)}
+.hero-tag{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--lake-pale2);margin-bottom:.4rem}
+.hero h1{font-family:'Fraunces',serif;font-size:22px;font-weight:300;line-height:1.3;color:#fff;margin-bottom:.3rem}
+.hero p{font-size:13px;color:rgba(255,255,255,0.7);max-width:480px}
+.status-row{display:flex;gap:8px;margin-top:.9rem;flex-wrap:wrap}
+.status-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.status-pill.live{background:rgba(255,255,255,0.15);color:#fff}
+.status-pill.warn{background:rgba(250,199,117,0.25);color:#FAC775}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block}
+.dot.pulse{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.section-title{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 .75rem}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--border-radius-lg);padding:1rem 1.1rem}
+.metric-card{background:var(--surface);border-radius:var(--border-radius-md);padding:.85rem 1rem}
+.metric-label{font-size:12px;color:var(--muted);margin-bottom:.3rem;display:flex;align-items:center;justify-content:space-between}
+.metric-value{font-size:22px;font-weight:500;font-family:'Fraunces',serif;line-height:1}
+.metric-sub{font-size:11px;color:var(--muted);margin-top:.25rem}
+.ok{color:var(--lake)}
+.warn-color{color:var(--warn)}
+.danger-color{color:var(--danger)}
+.status-badge{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px}
+.badge-ok{background:var(--lake-pale);color:var(--lake)}
+.badge-warn{background:var(--warn-pale);color:var(--warn)}
+.badge-danger{background:var(--danger-pale);color:var(--danger)}
+.chart-wrap{position:relative;height:100px;width:100%;margin-top:.6rem}
+.node-card{border-left:2.5px solid var(--lake)}
+.node-card.warn-node{border-left-color:var(--warn)}
+.node-card.danger-node{border-left-color:var(--danger)}
+.node-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.node-name{font-size:13px;font-weight:500}
+.node-loc{font-size:11px;color:var(--muted);margin-top:1px}
+.readings-row{display:flex;gap:10px;flex-wrap:wrap}
+.reading{text-align:center;flex:1;min-width:50px}
+.r-val{font-size:15px;font-weight:500;font-family:'DM Mono',monospace}
+.r-label{font-size:10px;color:var(--muted);margin-top:2px}
+.arch-tabs{display:flex;gap:4px;margin-bottom:1rem}
+.tab-btn{font-size:12px;font-weight:500;padding:5px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+.tab-btn.active{background:var(--lake);color:#fff;border-color:var(--lake)}
+.tab-content{display:none}.tab-content.visible{display:block}
+.code-block{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.6;overflow-x:auto;white-space:pre;color:var(--text)}
+.code-comment{color:var(--muted)}
+.code-kw{color:var(--lake)}
+.code-str{color:var(--info)}
+.code-num{color:var(--warn)}
+.step-flow{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;padding:.6rem 0;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:15px;top:38px;bottom:0;width:1px;background:var(--border)}
+.step-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:#fff}
+.step-body{flex:1;padding-top:3px}
+.step-title{font-size:13px;font-weight:500;line-height:1.3}
+.step-desc{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5}
+.table-sm{width:100%;font-size:12px;border-collapse:collapse}
+.table-sm td,.table-sm th{padding:6px 8px;border-bottom:0.5px solid var(--border);text-align:left}
+.table-sm th{font-weight:500;color:var(--muted);font-size:11px}
+.table-sm tr:last-child td{border-bottom:none}
+.layer-chip{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;background:var(--lake-pale);color:var(--lake)}
+.alert-item{display:flex;gap:10px;align-items:flex-start;padding:.5rem 0;border-bottom:0.5px solid var(--border)}
+.alert-item:last-child{border-bottom:none}
+.alert-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.alert-text{font-size:12px;line-height:1.5}
+.alert-time{font-size:10px;color:var(--muted)}
+.report-form{display:flex;flex-direction:column;gap:8px}
+.report-form select,.report-form textarea{font-size:12px;border-radius:var(--border-radius-md);border:0.5px solid var(--border);padding:6px 10px;background:var(--card);color:var(--text);font-family:'DM Sans',sans-serif}
+.report-form button{font-size:12px;font-weight:500;padding:8px;background:var(--lake);color:#fff;border:none;border-radius:var(--border-radius-md);cursor:pointer}
+.map-svg-wrap{border-radius:var(--border-radius-md);overflow:hidden;background:var(--surface);padding:.5rem}
+.summary-table{width:100%;font-size:12px;border-collapse:collapse}
+.summary-table td{padding:8px 10px;border-bottom:0.5px solid var(--border);vertical-align:top}
+.summary-table tr:last-child td{border-bottom:none}
+.summary-table td:first-child{font-weight:500;width:120px;color:var(--text)}
+.summary-table td:nth-child(2){color:var(--muted)}
+.summary-table td:nth-child(3){font-family:'DM Mono',monospace;font-size:11px;color:var(--lake)}
+</style>
+
+<div class="page">
+<h2 class="sr-only">Pragati Nagar Lake — Real-Time Monitoring & Tech Integration system dashboard</h2>
+
+<div class="hero">
+  <div class="hero-tag">Group 3 — Real-Time Monitoring &amp; Tech Integration</div>
+  <h1>Pragati Nagar Lake<br>Pollution Monitoring System</h1>
+  <p>IoT sensor nodes + cloud backend + public dashboard. Live water quality tracking for Pragati Nagar, Hyderabad.</p>
+  <div class="status-row">
+    <span class="status-pill live"><span class="dot pulse"></span>3 sensor nodes online</span>
+    <span class="status-pill live"><span class="dot"></span>LoRa gateway active</span>
+    <span class="status-pill warn"><span class="dot pulse"></span>1 alert: low DO at Node B</span>
+  </div>
+</div>
+
+<div class="section-title">Live sensor readings — updated every 60 s</div>
+<div class="grid4" id="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-label">pH level <span class="status-badge badge-ok">Normal</span></div>
+    <div class="metric-value ok" id="m-ph">6.9</div>
+    <div class="metric-sub">Target: 6.5 – 8.5</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Dissolved O₂ <span class="status-badge badge-warn" id="do-badge">Low</span></div>
+    <div class="metric-value warn-color" id="m-do">3.8</div>
+    <div class="metric-sub">Target: &gt; 5 mg/L</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Turbidity <span class="status-badge badge-warn">Moderate</span></div>
+    <div class="metric-value warn-color" id="m-turb">62</div>
+    <div class="metric-sub">Target: &lt; 50 NTU</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">TDS <span class="status-badge badge-ok">Normal</span></div>
+    <div class="metric-value ok" id="m-tds">387</div>
+    <div class="metric-sub">Target: &lt; 500 ppm</div>
+  </div>
+</div>
+
+<div class="section-title">Node status — 3 locations around the lake</div>
+<div class="grid2">
+  <div class="card node-card" id="node-a">
+    <div class="node-header">
+      <div>
+        <div class="node-name">Node A — North inlet</div>
+        <div class="node-loc">Sewage channel entry, near housing colony</div>
+      </div>
+      <span class="status-badge badge-ok">Online</span>
+    </div>
+    <div class="readings-row">
+      <div class="reading"><div class="r-val ok" id="na-ph">7.1</div><div class="r-label">pH</div></div>
+      <div class="reading"><div class="r-val ok" id="na-do">5.4</div><div class="r-label">DO mg/L</div></div>
+      <div class="reading"><div class="r-val warn-color" id="na-turb">58</div><div class="r-label">NTU</div></div>
+      <div class="reading"><div class="r-val ok" id="na-tds">360</div><div class="r-label">TDS ppm</div></div>
+      <div class="reading"><div class="r-val" id="na-temp">28.2</div><div class="r-label">°C</div></div>
+    </div>
+  </div>
+  <div class="card node-card danger-node" id="node-b">
+    <div class="node-header">
+      <div>
+        <div class="node-name">Node B — Lake centre</div>
+        <div class="node-loc">Mid-lake, deepest point</div>
+      </div>
+      <span class="status-badge badge-danger">Alert</span>
+    </div>
+    <div class="readings-row">
+      <div class="reading"><div class="r-val ok" id="nb-ph">6.6</div><div class="r-label">pH</div></div>
+      <div class="reading"><div class="r-val danger-color" id="nb-do">3.2</div><div class="r-label">DO mg/L</div></div>
+      <div class="reading"><div class="r-val warn-color" id="nb-turb">71</div><div class="r-label">NTU</div></div>
+      <div class="reading"><div class="r-val ok" id="nb-tds">410</div><div class="r-label">TDS ppm</div></div>
+      <div class="reading"><div class="r-val" id="nb-temp">29.8</div><div class="r-label">°C</div></div>
+    </div>
+  </div>
+  <div class="card node-card">
+    <div class="node-header">
+      <div>
+        <div class="node-name">Node C — South outlet</div>
+        <div class="node-loc">Stormwater drain exit</div>
+      </div>
+      <span class="status-badge badge-ok">Online</span>
+    </div>
+    <div class="readings-row">
+      <div class="reading"><div class="r-val ok" id="nc-ph">7.4</div><div class="r-label">pH</div></div>
+      <div class="reading"><div class="r-val ok" id="nc-do">5.1</div><div class="r-label">DO mg/L</div></div>
+      <div class="reading"><div class="r-val ok" id="nc-turb">44</div><div class="r-label">NTU</div></div>
+      <div class="reading"><div class="r-val ok" id="nc-tds">395</div><div class="r-label">TDS ppm</div></div>
+      <div class="reading"><div class="r-val" id="nc-temp">27.5</div><div class="r-label">°C</div></div>
+    </div>
+  </div>
+  <div class="card" style="background:var(--surface)">
+    <div class="node-name" style="margin-bottom:.5rem;font-size:13px">Recent alerts</div>
+    <div class="alert-item">
+      <div class="alert-dot" style="background:var(--danger)"></div>
+      <div><div class="alert-text">Node B: DO dropped to 3.2 mg/L — fish kill risk</div><div class="alert-time">Today, 09:14 AM</div></div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-dot" style="background:var(--warn)"></div>
+      <div><div class="alert-text">Node A: Turbidity spike 58 NTU — possible sewage</div><div class="alert-time">Today, 07:52 AM</div></div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-dot" style="background:var(--warn)"></div>
+      <div><div class="alert-text">Node B: Turbidity 71 NTU, exceeds threshold</div><div class="alert-time">Yesterday, 11:20 PM</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">pH trend — last 10 readings (Node A)</div>
+<div class="card" style="padding:1rem">
+  <div class="chart-wrap" style="height:130px">
+    <canvas id="phChart" role="img" aria-label="pH trend for Node A over last 10 readings">pH values fluctuating near 7.0</canvas>
+  </div>
+</div>
+
+<div class="section-title">Architecture deep-dive</div>
+<div class="arch-tabs" id="arch-tabs">
+  <button class="tab-btn active" onclick="switchTab('hw')">Hardware layer</button>
+  <button class="tab-btn" onclick="switchTab('sw')">Software layer</button>
+  <button class="tab-btn" onclick="switchTab('code')">Code samples</button>
+  <button class="tab-btn" onclick="switchTab('citizen')">Citizen reporting</button>
+</div>
+
+<div class="tab-content visible" id="tab-hw">
+<div class="card">
+<div class="step-flow">
+  <div class="step">
+    <div class="step-icon" style="background:var(--lake)"><i class="ti ti-solar-panel" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">Solar panel (5 W, on lid)</div>
+      <div class="step-desc">Charges the 3000 mAh LiPo battery during daylight. No grid power needed — node can float anywhere on the lake without cables. At 5 W and 5 h peak sunlight (Hyderabad avg), it generates ~25 Wh/day, enough to run the node at low-power mode indefinitely.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:#185FA5"><i class="ti ti-cpu" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">Arduino Nano (microcontroller brain)</div>
+      <div class="step-desc">Wakes every 60 s, reads all 5 sensor probes, packages a tiny JSON payload (pH, DO, turbidity, TDS, temperature + node ID + timestamp), sends it via LoRa, then sleeps. Sleep current ~20 µA — this is how battery life exceeds 12 h even without sun. Total cost: ₹350.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:#3B6D11"><i class="ti ti-wifi" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">LoRa module SX1278 (wireless radio)</div>
+      <div class="step-desc">LoRa = Long Range radio. Transmits tiny packets up to 5 km on 433 MHz using very little power (50 mW). Pragati Nagar Lake is ~600 m across — a single gateway on the lake bund can receive all three nodes simultaneously. No SIM card, no WiFi, no monthly bill. Module cost: ₹450.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:var(--warn)"><i class="ti ti-droplet" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">Submerged sensor probes (5 parameters)</div>
+      <div class="step-desc">
+        <b>pH probe</b> — measures acidity. Normal lake: 6.5–8.5. Sewage drops this fast.<br>
+        <b>DO probe</b> — dissolved oxygen. Below 5 mg/L, fish start dying. Below 2, it's a dead zone.<br>
+        <b>Temperature sensor</b> — hot industrial discharge heats the lake, lowers DO solubility.<br>
+        <b>Turbidity sensor</b> — laser scatter measures cloudiness (NTU). Sewage/silt = high NTU.<br>
+        <b>TDS sensor</b> — total dissolved solids. Detects salts, heavy metals, agricultural runoff.
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:#533AB7"><i class="ti ti-lock" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">IP67 sealed enclosure + SD card logger</div>
+      <div class="step-desc">IP67 means waterproof up to 1 m for 30 min — safe from rain, waves, and splashing. The SD card saves every reading locally as a CSV. If the LoRa connection drops (interference, node out of range), no data is lost — it syncs when reconnected. Enclosure cost: ₹800.</div>
+    </div>
+  </div>
+</div>
+<div style="margin-top:1rem;padding-top:1rem;border-top:0.5px solid var(--border)">
+  <div class="node-name" style="font-size:12px;margin-bottom:.5rem">Estimated cost per sensor node (Pragati Nagar deployment)</div>
+  <table class="table-sm">
+    <tr><th>Component</th><th>Qty</th><th>Unit cost</th><th>Subtotal</th></tr>
+    <tr><td>Arduino Nano</td><td>1</td><td>₹350</td><td>₹350</td></tr>
+    <tr><td>LoRa SX1278</td><td>1</td><td>₹450</td><td>₹450</td></tr>
+    <tr><td>pH probe</td><td>1</td><td>₹1,800</td><td>₹1,800</td></tr>
+    <tr><td>DO probe</td><td>1</td><td>₹3,500</td><td>₹3,500</td></tr>
+    <tr><td>Turbidity + Temp + TDS</td><td>3</td><td>₹600</td><td>₹1,800</td></tr>
+    <tr><td>Solar + Battery</td><td>1</td><td>₹1,200</td><td>₹1,200</td></tr>
+    <tr><td>IP67 enclosure + misc</td><td>1</td><td>₹2,000</td><td>₹2,000</td></tr>
+    <tr><td colspan="3" style="font-weight:500">Total per node</td><td style="font-weight:500;color:var(--lake)">≈ ₹11,100</td></tr>
+  </table>
+  <div style="font-size:11px;color:var(--muted);margin-top:.5rem">3 nodes + 1 gateway (Raspberry Pi + 4G, ₹6,000) = ₹39,300 total hardware. Software is 100% open source.</div>
+</div>
+</div>
+</div>
+
+<div class="tab-content" id="tab-sw">
+<div class="card">
+<div class="step-flow">
+  <div class="step">
+    <div class="step-icon" style="background:var(--lake)"><i class="ti ti-antenna" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">LoRa gateway (Raspberry Pi 4 on the bund)</div>
+      <div class="step-desc">The Pi runs a LoRa receiver script 24/7. When a sensor node transmits (every 60 s), the Pi decodes the packet and forwards it to the cloud server using MQTT — a lightweight IoT messaging protocol. The Pi also has a 4G dongle for internet and a backup local server, so even if cloud is unreachable, data is stored locally. Cost: ₹6,000 (Pi + antenna + enclosure).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:#185FA5"><i class="ti ti-server" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">Backend — Node.js + TimescaleDB</div>
+      <div class="step-desc">An Express API server receives MQTT messages, validates them (checks for sensor drift, missing values), and writes every reading into TimescaleDB. TimescaleDB is purpose-built for time-series data — it stores millions of rows of (timestamp, node_id, ph, do, turbidity, tds, temp) efficiently with automatic compression. An alert engine runs checks: if pH &lt; 6.5 OR DO &lt; 4 OR turbidity &gt; 50 NTU → it fires an SMS to GHMC and a push notification to the mobile app.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:#639922"><i class="ti ti-chart-line" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">Admin dashboard (web app + WebSocket)</div>
+      <div class="step-desc">A React web app connects to the backend via WebSocket — a live two-way connection. When Node B sends a new reading, the server pushes it through the WebSocket and the dashboard updates instantly without any page refresh. Authorities at GHMC or Hyderabad Lake Conservation Committee can log in, see all three nodes, view historical trends, export CSV reports, and acknowledge alerts.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:#854F0B"><i class="ti ti-device-mobile" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">Citizen reporting mobile app</div>
+      <div class="step-desc">Any resident near Pragati Nagar Lake can scan a QR code at the lake entrance. The app (React Native / Flutter) opens a simple form: take a photo, tap a GPS pin on the lake map, select issue type (sewage smell / garbage dumping / oil slick / fish kill / other), add a 1-line description, and submit. The report hits the same backend API and appears in the admin dashboard within 5 seconds. No login required — just the QR scan.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-icon" style="background:#533AB7"><i class="ti ti-device-tv" aria-hidden="true"></i></div>
+    <div class="step-body">
+      <div class="step-title">Public LED display board at the lake</div>
+      <div class="step-desc">A low-cost outdoor LED board (₹4,000) polls the public API every 5 minutes and shows current water quality status as a colour-coded safety index: GREEN (safe), YELLOW (caution), RED (dangerous). Residents walking past can see immediately if the lake is healthy. No app download required.</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="tab-content" id="tab-code">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div>
+  <div style="font-size:12px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:6px"><span class="layer-chip">Arduino</span> Sensor node firmware — runs on every node</div>
+  <div class="code-block"><span class="code-comment">// Pragati Nagar Lake — Sensor Node Firmware
+// Runs on Arduino Nano, wakes every 60 seconds</span>
+
+<span class="code-kw">#include</span> <span class="code-str">&lt;SPI.h&gt;</span>
+<span class="code-kw">#include</span> <span class="code-str">&lt;LoRa.h&gt;</span>
+<span class="code-kw">#include</span> <span class="code-str">&lt;OneWire.h&gt;</span>
+
+<span class="code-kw">const char</span>* NODE_ID = <span class="code-str">"node_B"</span>; <span class="code-comment">// Change per node</span>
+
+<span class="code-kw">void</span> loop() {
+  <span class="code-comment">// 1. Read all sensors</span>
+  <span class="code-kw">float</span> ph      = readPH();      <span class="code-comment">// 0–14 scale</span>
+  <span class="code-kw">float</span> do_mgl  = readDO();      <span class="code-comment">// mg/L dissolved oxygen</span>
+  <span class="code-kw">float</span> temp    = readTemp();    <span class="code-comment">// °C</span>
+  <span class="code-kw">int</span>   turbNTU = readTurbidity();<span class="code-comment">// NTU</span>
+  <span class="code-kw">int</span>   tds     = readTDS();     <span class="code-comment">// ppm</span>
+
+  <span class="code-comment">// 2. Build compact JSON payload</span>
+  String payload = <span class="code-str">"{"</span>;
+  payload += <span class="code-str">"\"id\":\""</span> + String(NODE_ID) + <span class="code-str">"\","</span>;
+  payload += <span class="code-str">"\"ph\":"</span>   + String(ph,   <span class="code-num">1</span>) + <span class="code-str">","</span>;
+  payload += <span class="code-str">"\"do\":"</span>   + String(do_mgl, <span class="code-num">1</span>) + <span class="code-str">","</span>;
+  payload += <span class="code-str">"\"t\":"</span>    + String(temp,  <span class="code-num">1</span>) + <span class="code-str">","</span>;
+  payload += <span class="code-str">"\"ntu\":"</span>  + String(turbNTU) + <span class="code-str">","</span>;
+  payload += <span class="code-str">"\"tds\":"</span>  + String(tds) + <span class="code-str">"}"</span>;
+
+  <span class="code-comment">// 3. Transmit over LoRa (5 km range, 50 mW)</span>
+  LoRa.beginPacket();
+  LoRa.print(payload);
+  LoRa.endPacket();
+
+  <span class="code-comment">// 4. Also save locally to SD card</span>
+  saveToSD(payload);
+
+  <span class="code-comment">// 5. Sleep 60 seconds to save battery</span>
+  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+}</div>
+</div>
+<div>
+  <div style="font-size:12px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:6px"><span class="layer-chip">Node.js</span> Backend alert engine — runs on the cloud server</div>
+  <div class="code-block"><span class="code-comment">// Alert engine — checks thresholds after every reading</span>
+<span class="code-comment">// Pragati Nagar Lake specific thresholds</span>
+
+<span class="code-kw">const</span> THRESHOLDS = {
+  ph:  { min: <span class="code-num">6.5</span>, max: <span class="code-num">8.5</span> },  <span class="code-comment">// Normal lake pH</span>
+  do:  { min: <span class="code-num">4.0</span> },              <span class="code-comment">// mg/L — below = fish stress</span>
+  ntu: { max: <span class="code-num">50</span>  },              <span class="code-comment">// NTU — above = sewage risk</span>
+  tds: { max: <span class="code-num">500</span> },              <span class="code-comment">// ppm — above = heavy metals</span>
+  t:   { max: <span class="code-num">32</span>  }               <span class="code-comment">// °C — thermal pollution</span>
+};
+
+<span class="code-kw">function</span> checkAlerts(reading) {
+  <span class="code-kw">const</span> alerts = [];
+
+  <span class="code-kw">if</span> (reading.ph &lt; THRESHOLDS.ph.min)
+    alerts.push(<span class="code-str">`pH critically low: ${reading.ph} at ${reading.id}`</span>);
+
+  <span class="code-kw">if</span> (reading.do &lt; THRESHOLDS.do.min)
+    alerts.push(<span class="code-str">`Low dissolved oxygen: ${reading.do} mg/L — fish kill risk!`</span>);
+
+  <span class="code-kw">if</span> (reading.ntu &gt; THRESHOLDS.ntu.max)
+    alerts.push(<span class="code-str">`High turbidity: ${reading.ntu} NTU — possible sewage`</span>);
+
+  <span class="code-kw">if</span> (alerts.length &gt; <span class="code-num">0</span>) {
+    sendSMS_to_GHMC(alerts);          <span class="code-comment">// Text GHMC officials</span>
+    broadcastWebSocket(alerts);       <span class="code-comment">// Push to dashboard</span>
+    sendPushNotification(alerts);     <span class="code-comment">// Notify mobile app users</span>
+    logToDatabase(reading, alerts);   <span class="code-comment">// Store for analysis</span>
+  }
+}</div>
+</div>
+</div>
+</div>
+
+<div class="tab-content" id="tab-citizen">
+<div class="grid2">
+<div class="card">
+  <div class="node-name" style="margin-bottom:.5rem">Submit a pollution report</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:.75rem">Simulates the citizen mobile app form — scan QR at lake to open this</div>
+  <div class="report-form">
+    <select id="rep-type">
+      <option>Select issue type…</option>
+      <option>Sewage smell / discharge</option>
+      <option>Garbage / plastic dumping</option>
+      <option>Oil slick / chemical spill</option>
+      <option>Fish kill / dead fish</option>
+      <option>Illegal construction near bund</option>
+      <option>Other</option>
+    </select>
+    <select id="rep-node">
+      <option>Location on lake…</option>
+      <option>North inlet (near colony)</option>
+      <option>Lake centre</option>
+      <option>South outlet</option>
+      <option>East bund / walking path</option>
+    </select>
+    <textarea id="rep-desc" rows="3" placeholder="Brief description (optional)…"></textarea>
+    <button onclick="submitReport()">Submit report to GHMC dashboard</button>
+  </div>
+  <div id="rep-confirm" style="display:none;margin-top:.5rem;font-size:12px;color:var(--lake);padding:.5rem;background:var(--lake-pale);border-radius:var(--border-radius-md)"></div>
+</div>
+<div class="card">
+  <div class="node-name" style="margin-bottom:.75rem">How the citizen report flow works</div>
+  <div class="step-flow">
+    <div class="step" style="padding:.4rem 0">
+      <div style="width:22px;height:22px;border-radius:50%;background:var(--lake);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+      <div class="step-body"><div class="step-title" style="font-size:12px">Resident scans QR code</div><div class="step-desc">Posted on boards at lake bund. Opens web app in browser — no install needed.</div></div>
+    </div>
+    <div class="step" style="padding:.4rem 0">
+      <div style="width:22px;height:22px;border-radius:50%;background:var(--lake);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:normal;justify-content:center;flex-shrink:0">2</div>
+      <div class="step-body"><div class="step-title" style="font-size:12px">Fills form + takes photo</div><div class="step-desc">Selects issue type, pins GPS location, adds optional photo from camera.</div></div>
+    </div>
+    <div class="step" style="padding:.4rem 0">
+      <div style="width:22px;height:22px;border-radius:50%;background:var(--lake);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+      <div class="step-body"><div class="step-title" style="font-size:12px">Report hits backend API</div><div class="step-desc">POST /api/reports → stored in DB with timestamp, GPS coords, photo URL.</div></div>
+    </div>
+    <div class="step" style="padding:.4rem 0">
+      <div style="width:22px;height:22px;border-radius:50%;background:var(--lake);color:#fff;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+      <div class="step-body"><div class="step-title" style="font-size:12px">GHMC dashboard updates live</div><div class="step-desc">Report appears on admin map in &lt;5 s via WebSocket push. Officials can assign a field team.</div></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="section-title">Full system summary</div>
+<div class="card">
+<table class="summary-table">
+<tr><td>Layer</td><td>What it does</td><td>Technology</td></tr>
+<tr><td>Sensor node</td><td>Measures pH, DO, turbidity, TDS, temp every 60 s; transmits wirelessly; saves to SD card as backup</td><td>Arduino Nano + LoRa SX1278 + Solar</td></tr>
+<tr><td>Gateway</td><td>Receives LoRa packets from all 3 nodes; forwards to cloud via 4G using MQTT; local fallback storage</td><td>Raspberry Pi 4 + 4G + antenna</td></tr>
+<tr><td>Backend</td><td>Validates + stores all readings; runs threshold checks; fires SMS/push alerts to GHMC officials</td><td>Node.js + TimescaleDB + MQTT</td></tr>
+<tr><td>Dashboard</td><td>Live charts, node health map, alert log, CSV export; for GHMC and lake conservation committee</td><td>React + WebSocket API</td></tr>
+<tr><td>Mobile app</td><td>Citizen pollution reporting with GPS pin + photo; QR code entry, no login needed</td><td>React Native / Flutter</td></tr>
+<tr><td>Public board</td><td>Outdoor LED display at lake bund shows GREEN/YELLOW/RED water quality status every 5 min</td><td>Low-cost LED board + API poll</td></tr>
+<tr><td>Total cost</td><td>3 sensor nodes + 1 gateway + open-source software</td><td>≈ ₹39,300 hardware, ₹0 software</td></tr>
+</table>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const phData = [7.2,7.0,6.9,7.1,7.3,7.0,6.8,7.1,7.2,7.1];
+const labels = ['T-9','T-8','T-7','T-6','T-5','T-4','T-3','T-2','T-1','Now'];
+const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+const gridC = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+const textC = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)';
+
+new Chart(document.getElementById('phChart'), {
+  type:'line',
+  data:{
+    labels,
+    datasets:[{
+      label:'pH (Node A)',
+      data:phData,
+      borderColor:'#1D9E75',
+      backgroundColor:'rgba(29,158,117,0.08)',
+      borderWidth:1.5,
+      pointRadius:3,
+      pointBackgroundColor:'#1D9E75',
+      fill:true,
+      tension:0.3
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        backgroundColor:isDark?'#1a1a18':'#fff',
+        borderColor:gridC,
+        borderWidth:1,
+        titleColor:textC,
+        bodyColor:isDark?'#c2c0b6':'#3d3d3a',
+        padding:8
+      }
+    },
+    scales:{
+      x:{grid:{color:gridC},ticks:{color:textC,font:{size:10}}},
+      y:{
+        min:6.0,max:8.5,
+        grid:{color:gridC},
+        ticks:{color:textC,font:{size:10},stepSize:0.5},
+        title:{display:true,text:'pH',color:textC,font:{size:10}}
+      }
+    }
+  }
+});
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('visible'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('visible');
+  event.target.classList.add('active');
+}
+
+function submitReport() {
+  const type = document.getElementById('rep-type').value;
+  const loc  = document.getElementById('rep-node').value;
+  if (type.includes('Select') || loc.includes('Location')) {
+    alert('Please select issue type and location.');
+    return;
+  }
+  const el = document.getElementById('rep-confirm');
+  el.style.display = 'block';
+  el.textContent = `Report submitted — "${type}" at ${loc}. GHMC dashboard updated. Reference: PNL-${Math.floor(Math.random()*9000+1000)}`;
+}
+
+const sensorRand = (base, range) => (base + (Math.random()-0.5)*range*2).toFixed(1);
+const intRand = (base, range) => Math.round(base + (Math.random()-0.5)*range*2);
+
+setInterval(()=>{
+  document.getElementById('na-ph').textContent    = sensorRand(7.1, 0.15);
+  document.getElementById('na-do').textContent    = sensorRand(5.4, 0.3);
+  document.getElementById('na-turb').textContent  = intRand(58, 5);
+  document.getElementById('na-tds').textContent   = intRand(360, 15);
+  document.getElementById('na-temp').textContent  = sensorRand(28.2, 0.4);
+  document.getElementById('nb-ph').textContent    = sensorRand(6.6, 0.1);
+  document.getElementById('nb-do').textContent    = sensorRand(3.2, 0.2);
+  document.getElementById('nb-turb').textContent  = intRand(71, 6);
+  document.getElementById('nb-tds').textContent   = intRand(410, 12);
+  document.getElementById('nb-temp').textContent  = sensorRand(29.8, 0.5);
+  document.getElementById('nc-ph').textContent    = sensorRand(7.4, 0.12);
+  document.getElementById('nc-do').textContent    = sensorRand(5.1, 0.25);
+  document.getElementById('nc-turb').textContent  = intRand(44, 4);
+  document.getElementById('nc-tds').textContent   = intRand(395, 10);
+  document.getElementById('nc-temp').textContent  = sensorRand(27.5, 0.3);
+}, 5000);
+</script>
